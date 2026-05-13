@@ -50,29 +50,29 @@ services:
       timeout: 5s
       retries: 5
 
-  # FreeSWITCH电话交换系统
-  freeswitch:
-    image: safarov/freeswitch:latest
-    container_name: callcenter-freeswitch
-    restart: always
-    privileged: true
-    environment:
-      TZ: Asia/Shanghai
-    volumes:
-      - ./docker/freeswitch/conf:/etc/freeswitch
-      - recordings:/var/lib/freeswitch/recordings
-      - sounds:/usr/share/freeswitch/sounds
-    ports:
-      - "5060:5060/udp"
-      - "5060:5060/tcp"
-      - "8021:8021"
-      - "7480:7480/tcp"
-      - "16384-32768:16384-32768/udp"
-    networks:
-      - callcenter-network
-    depends_on:
-      - mysql
-      - redis
+  # FreeSWITCH电话交换系统（暂时禁用，需要时手动启用）
+  # freeswitch:
+  #   image: safarov/freeswitch:latest
+  #   container_name: callcenter-freeswitch
+  #   restart: always
+  #   privileged: true
+  #   environment:
+  #     TZ: Asia/Shanghai
+  #   volumes:
+  #     - ./docker/freeswitch/conf:/etc/freeswitch
+  #     - recordings:/var/lib/freeswitch/recordings
+  #     - sounds:/usr/share/freeswitch/sounds
+  #   ports:
+  #     - "5060:5060/udp"
+  #     - "5060:5060/tcp"
+  #     - "8021:8021"
+  #     - "7480:7480/tcp"
+  #     - "16384-32768:16384-32768/udp"
+  #   networks:
+  #     - callcenter-network
+  #   depends_on:
+  #     - mysql
+  #     - redis
 
   # 后端服务
   backend:
