@@ -53,7 +53,7 @@
               :key="tag.id"
               :label="tag.name"
               :value="tag.id"
-              :style="{ color: tag.color }
+              :style="{ color: tag.color }"
             />
           </el-select>
         </el-form-item>
