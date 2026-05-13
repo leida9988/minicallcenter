@@ -30,18 +30,18 @@ jinja2>=3.1.0
 pytz>=2023.3
 websockets>=11.0.0
 aiohttp>=3.8.0
-# FreeSWITCH对接
-freeswitch-esl>=1.0.0
+# FreeSWITCH对接（可选，需要时手动安装）
+# freeswitch-esl>=1.0.0
 # AI相关（可选）
-openai>=1.0.0
-baidu-aip>=4.16.0  # 百度AI
-tencentcloud-sdk-python>=3.0.0  # 腾讯云AI
+# openai>=1.0.0
+# baidu-aip>=4.16.0  # 百度AI
+# tencentcloud-sdk-python>=3.0.0  # 腾讯云AI
 # 系统监控
-psutil>=5.9.0
-# 开发依赖
-pytest>=7.4.0
-pytest-asyncio>=0.21.0
-black>=23.0.0
-flake8>=6.0.0
-mypy>=1.4.0
-pre-commit>=3.3.0
+# psutil>=5.9.0
+# 开发依赖（已移至requirements-dev.txt）
+# pytest>=7.4.0
+# pytest-asyncio>=0.21.0
+# black>=23.0.0
+# flake8>=6.0.0
+# mypy>=1.4.0
+# pre-commit>=3.3.0
