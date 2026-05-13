@@ -44,7 +44,7 @@
               <el-icon><Microphone /></el-icon>
             </el-button>
             <el-button :type="isHeld ? 'danger' : 'primary'" @click="toggleHold" circle>
-              <el-icon><Pause /></el-icon>
+              <el-icon><PauseOutline /></el-icon>
             </el-button>
             <el-button type="primary" @click="handleTransfer" circle>
               <el-icon><SwitchButton /></el-icon>
@@ -277,7 +277,7 @@
 import { ref, reactive, onMounted, onUnmounted, getCurrentInstance } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Phone, Delete, Microphone, Pause, SwitchButton, UserPlus, Document, Timer, OfficeBuilding } from '@element-plus/icons-vue'
+import { Phone, Delete, Microphone, PauseOutline, SwitchButton, UserPlus, Document, Timer, OfficeBuilding } from '@element-plus/icons-vue'
 import { getCustomerDetailApi, createFollowRecordApi } from '@/api/customer'
 import { updateAgentStatusApi } from '@/api/call'
 import { formatDuration } from '@/utils/datetime'
