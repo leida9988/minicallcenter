@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "callcenter"
+version = "1.0.0"
+description = "通用型中小型电话营销系统"
+authors = [
+  { name = "Your Name", email = "your.email@example.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.100.0",
+  "uvicorn>=0.23.2",
+  "python-multipart>=0.0.6",
+  "pydantic>=2.0.0",
+  "pydantic-settings>=2.0.0",
+  "sqlalchemy>=2.0.0",
+  "aiomysql>=0.2.0",
+  "redis>=5.0.0",
+  "python-jose[cryptography]>=3.3.0",
+  "passlib[bcrypt]>=1.7.4",
+  "casbin>=1.38.0",
+  "casbin-sqlalchemy-adapter>=1.1.0",
+  "pandas>=2.0.0",
+  "openpyxl>=3.1.0",
+  "python-dotenv>=1.0.0",
+  "aiofiles>=23.0.0",
+  "jinja2>=3.1.0",
+  "pytz>=2023.3",
+  "freeswitch-esl>=1.0.0",
+  "websockets>=11.0.0",
+  "aiohttp>=3.8.0",
+]
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4.0",
+  "pytest-asyncio>=0.21.0",
+  "black>=23.0.0",
+  "flake8>=6.0.0",
+  "mypy>=1.4.0",
+  "pre-commit>=3.3.0",
+]
+[project.scripts]
+callcenter = "app.main:main"

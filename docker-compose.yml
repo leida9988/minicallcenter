@@ -1,0 +1,140 @@
+version: '3.8'
+
+services:
+  # MySQL数据库
+  mysql:
+    image: mysql:8.0
+    container_name: callcenter-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-callcenter123}
+      MYSQL_DATABASE: ${DB_NAME:-callcenter}
+      MYSQL_USER: ${DB_USER:-callcenter}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-callcenter123}
+      TZ: Asia/Shanghai
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --max_connections=1000
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    networks:
+      - callcenter-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-callcenter123}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis缓存
+  redis:
+    image: redis:7-alpine
+    container_name: callcenter-redis
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-callcenter123}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    networks:
+      - callcenter-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FreeSWITCH电话交换系统
+  freeswitch:
+    image: safarov/freeswitch:latest
+    container_name: callcenter-freeswitch
+    restart: always
+    privileged: true
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ./docker/freeswitch/conf:/etc/freeswitch
+      - recordings:/var/lib/freeswitch/recordings
+      - sounds:/usr/share/freeswitch/sounds
+    ports:
+      - "5060:5060/udp"
+      - "5060:5060/tcp"
+      - "8021:8021"
+      - "7480:7480/tcp"
+      - "16384-32768:16384-32768/udp"
+    networks:
+      - callcenter-network
+    depends_on:
+      - mysql
+      - redis
+
+  # 后端服务
+  backend:
+    build: ./backend
+    container_name: callcenter-backend
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-callcenter}
+      DB_PASSWORD: ${DB_PASSWORD:-callcenter123}
+      DB_NAME: ${DB_NAME:-callcenter}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-callcenter123}
+      FS_HOST: freeswitch
+      FS_PORT: 8021
+      FS_PASSWORD: ClueCon
+      SECRET_KEY: ${SECRET_KEY:-your-secret-key-here}
+      DEBUG: "False"
+    volumes:
+      - recordings:/app/recordings
+      - ./data/storage:/app/data/storage
+      - ./logs:/app/logs
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    networks:
+      - callcenter-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # 前端服务
+  frontend:
+    build: ./frontend
+    container_name: callcenter-frontend
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    networks:
+      - callcenter-network
+    depends_on:
+      - backend
+
+# 数据卷
+volumes:
+  mysql_data:
+  redis_data:
+  recordings:
+  sounds:
+
+# 网络
+networks:
+  callcenter-network:
+    driver: bridge

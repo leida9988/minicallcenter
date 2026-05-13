@@ -1,0 +1,137 @@
+from typing import Optional, List, Dict, Any
+from pydantic import BaseModel, Field
+from app.schemas.base import BaseSchema, PageRequest
+# 通话趋势相关Schema
+class CallTrendItem(BaseModel):
+    date: str = Field(description="日期/时间")
+    total_calls: int = Field(description="总呼叫数")
+    answered_calls: int = Field(description="接通数")
+    answer_rate: float = Field(description="接通率(%)")
+    total_duration: int = Field(description="总通话时长(秒)")
+    avg_duration: float = Field(description="平均通话时长(秒)")
+    contacted_customers: int = Field(description="联系客户数")
+class CallTrendTotal(BaseModel):
+    total_calls: int = Field(description="总呼叫数")
+    answered_calls: int = Field(description="总接通数")
+    answer_rate: float = Field(description="总接通率(%)")
+    total_duration: int = Field(description="总通话时长(秒)")
+    avg_duration: float = Field(description="平均通话时长(秒)")
+    contacted_customers: int = Field(description="总联系客户数")
+class CallTrendResponse(BaseModel):
+    group_by: str = Field(description="分组粒度：day, hour, week, month")
+    start_date: str = Field(description="开始日期")
+    end_date: str = Field(description="结束日期")
+    total: CallTrendTotal = Field(description="总计")
+    list: List[CallTrendItem] = Field(description="统计列表")
+# 坐席绩效相关Schema
+class AgentPerformanceItem(BaseModel):
+    user_id: int = Field(description="用户ID")
+    username: str = Field(description="用户名")
+    nickname: Optional[str] = Field(None, description="姓名")
+    total_calls: int = Field(description="总呼叫数")
+    answered_calls: int = Field(description="接通数")
+    answer_rate: float = Field(description="接通率(%)")
+    total_duration: int = Field(description="总通话时长(秒)")
+    avg_duration: float = Field(description="平均通话时长(秒)")
+    contacted_customers: int = Field(description="联系客户数")
+    intention_customers: int = Field(description="意向客户数")
+    intention_rate: float = Field(description="意向率(%)")
+    deal_customers: int = Field(description="成交客户数")
+    conversion_rate: float = Field(description="转化率(%)")
+    total_follows: int = Field(description="跟进次数")
+    followed_customers: int = Field(description="跟进客户数")
+class AgentPerformanceTotal(BaseModel):
+    total_calls: int = Field(description="总呼叫数")
+    answered_calls: int = Field(description="总接通数")
+    answer_rate: float = Field(description="总接通率(%)")
+    total_duration: int = Field(description="总通话时长(秒)")
+    avg_duration: float = Field(description="平均通话时长(秒)")
+    contacted_customers: int = Field(description="总联系客户数")
+    intention_customers: int = Field(description="总意向客户数")
+    intention_rate: float = Field(description="总意向率(%)")
+    deal_customers: int = Field(description="总成交客户数")
+    conversion_rate: float = Field(description="总转化率(%)")
+    total_follows: int = Field(description="总跟进次数")
+    followed_customers: int = Field(description="总跟进客户数")
+class AgentPerformanceResponse(BaseModel):
+    start_date: str = Field(description="开始日期")
+    end_date: str = Field(description="结束日期")
+    department_id: Optional[int] = Field(None, description="部门ID")
+    total: AgentPerformanceTotal = Field(description="总计")
+    list: List[AgentPerformanceItem] = Field(description="坐席绩效列表")
+# 客户分析相关Schema
+class CustomerOverview(BaseModel):
+    total_customers: int = Field(description="客户总数")
+    new_customers: int = Field(description="新增客户数")
+    followed_customers: int = Field(description="已跟进客户数")
+    follow_rate: float = Field(description="跟进率(%)")
+    deal_customers: int = Field(description="成交客户数")
+class StatusStatItem(BaseModel):
+    status: int = Field(description="客户状态")
+    name: str = Field(description="状态名称")
+    count: int = Field(description="数量")
+class LevelStatItem(BaseModel):
+    level: int = Field(description="客户等级")
+    name: str = Field(description="等级名称")
+    count: int = Field(description="数量")
+class SourceStatItem(BaseModel):
+    source: str = Field(description="客户来源")
+    count: int = Field(description="数量")
+class FunnelItem(BaseModel):
+    name: str = Field(description="阶段名称")
+    value: int = Field(description="数量")
+class CustomerAnalysisResponse(BaseModel):
+    start_date: str = Field(description="开始日期")
+    end_date: str = Field(description="结束日期")
+    overview: CustomerOverview = Field(description="概览数据")
+    status_stats: List[StatusStatItem] = Field(description="状态统计")
+    level_stats: List[LevelStatItem] = Field(description="等级统计")
+    source_stats: List[SourceStatItem] = Field(description="来源统计")
+    conversion_funnel: List[FunnelItem] = Field(description="转化漏斗")
+# 通话时段分布相关Schema
+class HourlyDistributionItem(BaseModel):
+    hour: int = Field(description="小时（0-23）")
+    total_calls: int = Field(description="总呼叫数")
+    answered_calls: int = Field(description="接通数")
+    answer_rate: float = Field(description="接通率(%)")
+class HourlyDistributionResponse(BaseModel):
+    start_date: str = Field(description="开始日期")
+    end_date: str = Field(description="结束日期")
+    data: List[HourlyDistributionItem] = Field(description="按小时统计的数据")
+# 操作日志相关Schema
+class OperationLogItem(BaseSchema):
+    user_id: Optional[int] = Field(None, description="用户ID")
+    username: Optional[str] = Field(None, description="用户名")
+    module: Optional[str] = Field(None, description="模块名称")
+    operation: Optional[str] = Field(None, description="操作类型")
+    method: Optional[str] = Field(None, description="请求方法")
+    path: Optional[str] = Field(None, description="请求路径")
+    ip: Optional[str] = Field(None, description="IP地址")
+    location: Optional[str] = Field(None, description="操作地点")
+    user_agent: Optional[str] = Field(None, description="User Agent")
+    request_params: Optional[Dict[str, Any]] = Field(None, description="请求参数")
+    response_result: Optional[Dict[str, Any]] = Field(None, description="响应结果")
+    status: Optional[int] = Field(1, description="操作状态：1-成功 2-失败")
+    error_msg: Optional[str] = Field(None, description="错误信息")
+    cost_time: Optional[int] = Field(None, description="耗时(ms)")
+class OperationLogQuery(PageRequest):
+    user_id: Optional[int] = Field(None, description="用户ID")
+    module: Optional[str] = Field(None, description="模块名称")
+    operation: Optional[str] = Field(None, description="操作类型")
+    status: Optional[int] = Field(None, description="操作状态")
+    start_time: Optional[str] = Field(None, description="开始时间")
+    end_time: Optional[str] = Field(None, description="结束时间")
+# 首页统计看板相关Schema
+class DashboardStats(BaseModel):
+    today_calls: int = Field(description="今日呼叫数")
+    today_answered: int = Field(description="今日接通数")
+    today_answer_rate: float = Field(description="今日接通率(%)")
+    today_duration: int = Field(description="今日通话总时长(秒)")
+    today_new_customers: int = Field(description="今日新增客户")
+    today_follows: int = Field(description="今日跟进次数")
+    pending_customers: int = Field(description="待跟进客户数")
+    intention_customers: int = Field(description="意向客户总数")
+    deal_customers: int = Field(description="成交客户总数")
+    total_customers: int = Field(description="客户总数")
+    total_agents: int = Field(description="坐席总数")
+    online_agents: int = Field(description="在线坐席数")

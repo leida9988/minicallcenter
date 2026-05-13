@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(git clone https://github.com/Bytedesk/bytedesk.git)",
+      "PowerShell(git clone --depth 1 https://github.com/Bytedesk/bytedesk.git)",
+      "PowerShell(git config --global http.postBuffer 524288000)"
+    ]
+  }
+}

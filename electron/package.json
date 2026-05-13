@@ -1,0 +1,75 @@
+{
+  "name": "call-center-agent",
+  "version": "1.0.0",
+  "description": "电话营销系统坐席端桌面应用",
+  "main": "main.js",
+  "scripts": {
+    "dev": "set NODE_ENV=development && electron .",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
+  },
+  "keywords": [
+    "call-center",
+    "electron",
+    "crm"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "build": {
+    "appId": "com.callcenter.agent",
+    "productName": "电话营销系统坐席端",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "assets/**/*",
+      "node_modules/**/*",
+      "../frontend/dist/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "./assets",
+        "to": "assets"
+      }
+    ],
+    "win": {
+      "icon": "./assets/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "mac": {
+      "icon": "./assets/icon.icns",
+      "target": "dmg"
+    },
+    "linux": {
+      "icon": "./assets/icon.png",
+      "target": "deb"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeDirectory": true,
+      "showInstallLocation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "电话营销系统坐席端"
+    }
+  },
+  "devDependencies": {
+    "electron": "^42.0.1",
+    "electron-builder": "^26.8.1"
+  },
+  "dependencies": {
+    "axios": "^1.16.0",
+    "electron-store": "^11.0.2"
+  }
+}
