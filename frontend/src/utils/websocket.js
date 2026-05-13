@@ -1,5 +1,5 @@
 import { ElMessage } from 'element-plus'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/store/modules/user'
 
 class WebSocketService {
   constructor() {
