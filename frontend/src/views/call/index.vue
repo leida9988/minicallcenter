@@ -47,10 +47,10 @@
               <el-icon><VideoPause /></el-icon>
             </el-button>
             <el-button type="primary" @click="handleTransfer" circle>
-              <el-icon><SwitchButton /></el-icon>
+              <el-icon><Switch /></el-icon>
             </el-button>
             <el-button type="primary" @click="handleThreeWay" circle>
-              <el-icon><UserPlus /></el-icon>
+              <el-icon><UserAdd /></el-icon>
             </el-button>
             <el-button type="success" @click="showRecordForm = true" circle>
               <el-icon><Document /></el-icon>
@@ -277,7 +277,7 @@
 import { ref, reactive, onMounted, onUnmounted, getCurrentInstance } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Phone, Delete, Microphone, VideoPause, SwitchButton, UserPlus, Document, Timer, OfficeBuilding } from '@element-plus/icons-vue'
+import { Phone, Delete, Microphone, VideoPause, Switch, UserAdd, Document, Timer, OfficeBuilding } from '@element-plus/icons-vue'
 import { getCustomerDetailApi, createFollowRecordApi } from '@/api/customer'
 import { updateAgentStatusApi } from '@/api/call'
 import { formatDuration } from '@/utils/datetime'
