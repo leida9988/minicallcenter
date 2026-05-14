@@ -3,7 +3,7 @@ from fastapi import Depends, HTTPException, status
 from jose import JWTError, jwt
 from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.core.config import settings
+from app.core.config import settings, oauth2_scheme
 from app.core.security import verify_token
 from app.db.session import AsyncSessionLocal
 from app.models.system import User
@@ -15,7 +15,7 @@ async def get_db() -> Generator[AsyncSession, None, None]:
 # 获取当前用户
 async def get_current_user(
     db: AsyncSession = Depends(get_db),
-    token: str = Depends(settings.oauth2_scheme)
+    token: str = Depends(oauth2_scheme)
 ) -> Optional[User]:
     try:
         token_data = verify_token(token)
