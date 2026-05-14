@@ -3,7 +3,7 @@ from typing import List, Optional, Any
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.dependencies import get_db, get_current_active_user, get_current_superuser
-from app.models.user import User
+from app.models.system import User
 from app.core.config_engine import (
     config_engine,
     FieldConfig,
