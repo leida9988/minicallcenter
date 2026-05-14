@@ -74,7 +74,7 @@ class CRUDCustomer(CRUDBase[Customer, CustomerCreate, CustomerUpdate]):
             "page": page,
             "page_size": page_size,
             "total_page": (total + page_size - 1) // page_size if total > 0 else 0,
-            "list": items
+            "items": items
         }
     async def assign_customer(
         self,
@@ -170,7 +170,7 @@ class CRUDFollowRecord(CRUDBase[FollowRecord, FollowRecordCreate, Any]):
             "page": page,
             "page_size": page_size,
             "total_page": (total + page_size - 1) // page_size if total > 0 else 0,
-            "list": items
+            "items": items
         }
     async def create_record(
         self,

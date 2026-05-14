@@ -1,9 +1,8 @@
 from datetime import datetime
 from typing import Optional, Generic, TypeVar
 from pydantic import BaseModel, Field
-from pydantic.generics import GenericModel
 T = TypeVar("T")
-class ResponseBase(GenericModel, Generic[T]):
+class ResponseBase(BaseModel, Generic[T]):
     code: int = Field(200, description="状态码")
     message: str = Field("success", description="返回消息")
     data: Optional[T] = Field(None, description="返回数据")
@@ -20,9 +19,9 @@ class BaseSchema(BaseModel):
 class PageRequest(BaseModel):
     page: int = Field(1, ge=1, description="页码")
     page_size: int = Field(10, ge=1, le=100, description="每页数量")
-class PageResponse(GenericModel, Generic[T]):
+class PageResponse(BaseModel, Generic[T]):
     total: int = Field(description="总记录数")
     page: int = Field(description="当前页码")
     page_size: int = Field(description="每页数量")
     total_page: int = Field(description="总页数")
-    list: list[T] = Field(description="数据列表")
+    items: list[T] = Field(description="数据列表")

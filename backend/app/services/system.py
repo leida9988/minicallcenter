@@ -98,7 +98,7 @@ class CRUDOperationLog(CRUDBase[OperationLog, Any, Any]):
             "page": page,
             "page_size": page_size,
             "total_page": (total + page_size - 1) // page_size if total > 0 else 0,
-            "list": items
+            "items": items
         }
 system_config_service = CRUDSystemConfig(SystemConfig)
 operation_log_service = CRUDOperationLog(OperationLog)

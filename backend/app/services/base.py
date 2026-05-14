@@ -56,7 +56,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             "page": page,
             "page_size": page_size,
             "total_page": (total + page_size - 1) // page_size if total > 0 else 0,
-            "list": items
+            "items": items
         }
     async def create(self, db: AsyncSession, *, obj_in: CreateSchemaType) -> ModelType:
         """

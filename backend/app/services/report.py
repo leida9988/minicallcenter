@@ -112,7 +112,7 @@ class ReportService:
             "start_date": start_date,
             "end_date": end_date,
             "total": total,
-            "list": data
+            "items": data
         }
     async def get_agent_performance(
         self,
@@ -223,7 +223,7 @@ class ReportService:
             "end_date": end_date,
             "department_id": department_id,
             "total": total,
-            "list": data
+            "items": data
         }
     async def get_customer_analysis(
         self,
@@ -408,7 +408,7 @@ class ReportService:
             "page": page,
             "page_size": page_size,
             "total_page": (total + page_size - 1) // page_size if total > 0 else 0,
-            "list": logs
+            "items": logs
         }
 # 初始化服务
 report_service = ReportService()

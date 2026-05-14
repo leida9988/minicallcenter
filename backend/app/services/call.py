@@ -237,7 +237,7 @@ class CRUDCallRecord(CRUDBase[CallRecord, CallRecordCreate, Any]):
             "page": page,
             "page_size": page_size,
             "total_page": (total + page_size - 1) // page_size if total > 0 else 0,
-            "list": items
+            "items": items
         }
     async def create_record(self, db: AsyncSession, obj_in: CallRecordCreate) -> CallRecord:
         """
