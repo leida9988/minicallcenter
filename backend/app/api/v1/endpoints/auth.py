@@ -6,7 +6,7 @@ from app.core.config import settings
 from app.db.session import get_db
 from app.models.system import User
 from app.schemas.auth import Token, LoginResponse
-from app.utils.security import create_access_token, verify_password
+from app.core.security import create_access_token, verify_password
 from app.utils.logger import logger
 router = APIRouter()
 @router.post("/login", response_model=Token, summary="用户登录")

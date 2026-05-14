@@ -41,14 +41,18 @@ async def get_system_configs(
     """
     获取所有系统配置，需要超级管理员权限
     """
-    from app.models.config import SystemConfig
+    from app.models.system import SystemConfig
     configs = await SystemConfig.get_all(db)
     return {
         "configs": [
             {
-                "key": c.config_key,
-                "value": c.config_value,
+                "key": c.key,
+                "value": c.value,
+                "name": c.name,
                 "description": c.description,
+                "type": c.type,
+                "sort": c.sort,
+                "is_public": c.is_public,
                 "created_at": c.created_at,
                 "updated_at": c.updated_at
             }

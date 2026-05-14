@@ -22,6 +22,18 @@ class Settings(BaseSettings):
     DB_NAME: str = "callcenter"
     DB_CHARSET: str = "utf8mb4"
 
+    @property
+    def SQLALCHEMY_DATABASE_URI(self) -> str:
+        """数据库连接URI"""
+        return f"mysql+aiomysql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?charset={self.DB_CHARSET}"
+
+    @property
+    def REDIS_URL(self) -> str:
+        """Redis连接URL"""
+        if self.REDIS_PASSWORD:
+            return f"redis://:{self.REDIS_PASSWORD}@{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
+        return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
+
     # Redis配置
     REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379

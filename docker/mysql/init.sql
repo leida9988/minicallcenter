@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS system_config (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 插入初始超级管理员用户（密码：123456）
-INSERT INTO users (username, nickname, hashed_password, is_superuser, is_active) VALUES
+INSERT INTO system_user (username, nickname, password, is_superuser, is_active) VALUES
 ('admin', '超级管理员', '$2b$12$LQ8Dw5b57jK3dR8p9S0tUuhVxUvN3X7hG6eH0kG5fD4eC3bA2S1D0', TRUE, TRUE)
 ON DUPLICATE KEY UPDATE username=username;
 

@@ -109,3 +109,9 @@ class SystemConfig(BaseModel):
             await db.commit()
             await db.refresh(config)
         return config
+
+    @classmethod
+    async def get_all(cls, db: AsyncSession):
+        """获取所有配置"""
+        result = await db.execute(select(cls).where(cls.is_deleted == False))
+        return result.scalars().all()
