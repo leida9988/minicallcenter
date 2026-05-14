@@ -2,7 +2,7 @@ import time
 import json
 from typing import Optional
 from fastapi import Request, Response
-from fastapi.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings
