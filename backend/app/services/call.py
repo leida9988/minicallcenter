@@ -12,8 +12,16 @@ from app.schemas.call import (
 )
 from app.services.base import CRUDBase
 from app.utils.logger import logger
-import ESL
 import asyncio
+
+# 可选导入ESL模块
+try:
+    import ESL
+    ESL_AVAILABLE = True
+except ImportError:
+    ESL = None
+    ESL_AVAILABLE = False
+    logger.warning("freeswitch-esl模块未安装，呼叫功能将不可用")
 class FreeSWITCHService:
     """
     FreeSWITCH对接服务
@@ -22,11 +30,16 @@ class FreeSWITCHService:
         self.host = host
         self.port = port
         self.password = password
-        self.connection: Optional[ESL.ESLconnection] = None
+        self.connection: Optional[Any] = None
+        if not ESL_AVAILABLE:
+            logger.warning("FreeSWITCH服务不可用：freeswitch-esl模块未安装")
     async def connect(self) -> bool:
         """
         连接FreeSWITCH
         """
+        if not ESL_AVAILABLE:
+            logger.error("无法连接FreeSWITCH：freeswitch-esl模块未安装")
+            return False
         try:
             loop = asyncio.get_event_loop()
             self.connection = await loop.run_in_executor(
@@ -383,11 +396,13 @@ class CRUDIVRConfig(CRUDBase[IVRConfig, IVRConfigCreate, Any]):
         return result.scalar_one_or_none()
 # 初始化FreeSWITCH服务
 from app.core.config import settings
-freeswitch_service = FreeSWITCHService(
-    host=settings.FS_HOST,
-    port=settings.FS_PORT,
-    password=settings.FS_PASSWORD
-)
+freeswitch_service: Optional[FreeSWITCHService] = None
+if ESL_AVAILABLE:
+    freeswitch_service = FreeSWITCHService(
+        host=settings.FS_HOST,
+        port=settings.FS_PORT,
+        password=settings.FS_PASSWORD
+    )
 call_record_service = CRUDCallRecord(CallRecord)
 call_task_service = CRUDCallTask(CallTask)
 call_script_service = CRUDCallScript(CallScript)

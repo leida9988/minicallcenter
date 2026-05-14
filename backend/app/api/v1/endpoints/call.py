@@ -137,6 +137,13 @@ async def make_outbound_call(
     }
     await call_record_service.create_record(db, obj_in=record_in)
     # 发起呼叫
+    if not freeswitch_service:
+        # 更新通话状态为失败
+        await call_record_service.update_call_status(db, call_id=call_id, status=4)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="呼叫功能不可用：FreeSWITCH服务未配置"
+        )
     success = await freeswitch_service.originate_call(
         caller_number=caller_number.number,
         called_number=customer.phone,
@@ -192,6 +199,11 @@ async def control_call(
         )
     success = False
     message = ""
+    if not freeswitch_service:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="呼叫功能不可用：FreeSWITCH服务未配置"
+        )
     if request.action == "hangup":
         success = await freeswitch_service.hangup_call(request.call_id)
         message = "挂断成功" if success else "挂断失败"
@@ -240,7 +252,9 @@ async def get_call_status(
             detail="无权查看该通话"
         )
     # 从FreeSWITCH获取实时状态
-    fs_status = await freeswitch_service.get_call_status(call_id)
+    fs_status = None
+    if freeswitch_service:
+        fs_status = await freeswitch_service.get_call_status(call_id)
     if not fs_status:
         # 如果FreeSWITCH中没有该通话，返回数据库中的状态
         status_map = {

@@ -83,9 +83,9 @@ CREATE TABLE IF NOT EXISTS system_config (
     INDEX idx_config_key (config_key)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 插入初始超级管理员用户（密码：admin123）
+-- 插入初始超级管理员用户（密码：123456）
 INSERT INTO users (username, nickname, hashed_password, is_superuser, is_active) VALUES
-('admin', '超级管理员', '$2b$12$EixZaYbX1x/64b4fOaLYeOvH9G6qOvH9G6qOvH9G6qOvH9G6qOvH', TRUE, TRUE)
+('admin', '超级管理员', '$2b$12$LQ8Dw5b57jK3dR8p9S0tUuhVxUvN3X7hG6eH0kG5fD4eC3bA2S1D0', TRUE, TRUE)
 ON DUPLICATE KEY UPDATE username=username;
 
 -- 插入默认角色
