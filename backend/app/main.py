@@ -93,6 +93,10 @@ def create_app() -> FastAPI:
                 "docs": "/docs" if settings.DEBUG else None
             }
         }
+    # 健康检查接口（兼容docker健康检查）
+    @app.get("/api/v1/health", summary="健康检查")
+    async def health_check():
+        return {"code": 200, "message": "success", "data": {"status": "ok"}}
     return app
 app = create_app()
 def main():

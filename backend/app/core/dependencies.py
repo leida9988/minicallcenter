@@ -1,17 +1,13 @@
-from typing import Generator, Optional
+from typing import Optional
 from fastapi import Depends, HTTPException, status
 from jose import JWTError, jwt
 from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings, oauth2_scheme
 from app.core.security import verify_token
-from app.db.session import AsyncSessionLocal
+from app.db.session import get_db
 from app.models.system import User
 from app.schemas.auth import TokenPayload
-# 获取数据库会话
-async def get_db() -> Generator[AsyncSession, None, None]:
-    async with AsyncSessionLocal() as session:
-        yield session
 # 获取当前用户
 async def get_current_user(
     db: AsyncSession = Depends(get_db),

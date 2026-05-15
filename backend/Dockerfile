@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pkg-config \
     ffmpeg \
     sox \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # 设置工作目录
