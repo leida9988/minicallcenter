@@ -4,7 +4,7 @@ from datetime import datetime
 import json
 from enum import Enum
 from functools import lru_cache
-from ..models.config import SystemConfig
+from ..models.system import SystemConfig
 from ..db.session import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 
