@@ -1,7 +1,11 @@
 from datetime import datetime
 from sqlalchemy import Column, DateTime, Integer, String, Text, Boolean, Float, JSON
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.declarative import declared_attr
-from app.db.session import Base
+
+# 定义基础模型类
+Base = declarative_base()
+
 class BaseModel(Base):
     __abstract__ = True
     id = Column(Integer, primary_key=True, index=True, comment="主键ID")
